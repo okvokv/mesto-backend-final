@@ -1,3 +1,4 @@
+// главный модуль
 const express = require('express');
 require('dotenv').config();
 const cors = require('cors');
@@ -12,6 +13,9 @@ const usersRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
 const { requestsLogger, errorsLogger } = require('./middlewares/logger');
 
+// подключение серверного модуля для интерпретации файла
+const app = express();
+
 // назначение порта сервера
 const { PORT } = config;
 
@@ -20,21 +24,21 @@ mongoose.connect('mongodb://0.0.0.0:27017/mestodb')
   .then(() => console.log('MongoDB connected'))
   .catch((err) => console.log(err));
 
-// подключение серверного модуля для интерпретации файла
-const app = express();
-
 // сборка приходящих cookies
 app.use(cookieParser());
 // сборка объекта из JSON-формата
 app.use(express.json());
 
+// подключение логгера запросов
+app.use(requestsLogger);
+
+// обработчик CORS
+app.use(cors());
+
 // реализация возможности краш-теста при запросе на роут, потом удалить
 app.get('/crash-test', () => {
   setTimeout(() => { throw new Error('Сервер сейчас упадёт'); }, 0);
 });
-
-// подключение логгера запросов
-app.use(requestsLogger);
 
 // подключение роутеров
 app.use('/', adminsRouter);
@@ -56,22 +60,6 @@ app.use((err, req, res, next) => {
   res.status(statusCode).send({ message: statusCode === 500 ? 'На сервере произошла ошибка' : message });
   next();
 });
-
-// разрешённые адреса запросов
-// const allowedCors = [
-// 'http://okvokv-back.students.nomoredomains.monster/*',
-// 'https://okvokv-back.students.nomoredomains.monster/*',
-// 'http://okvokv-front.students.nomoredomains.monster/*',
-// 'https://okvokv-front.students.nomoredomains.monster/*',
-// 'http://github.com/*',
-// 'https://github.com/*',
-// 'localhost:3000/*',
-// '0.0.0.0/*',
-// ];
-
-// обработчик CORS
-app.use(cors());
-// app.use(cors({ origin: allowedCors }));
 
 // включение прослушивания  порта
 app.listen(PORT, () => {
