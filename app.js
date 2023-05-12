@@ -1,23 +1,19 @@
-// главный модуль
 const express = require('express');
 require('dotenv').config();
 const cors = require('cors');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const { errors } = require('celebrate');
+const finalErrorHandler = require('./middlewares/finalErrorHandler');
 const config = require('./config');
-const NotFoundError = require('./middlewares/NotFoundError');
-const auth = require('./middlewares/auth');
-const adminsRouter = require('./routes/admins');
-const usersRouter = require('./routes/users');
-const cardsRouter = require('./routes/cards');
+const routes = require('./routes');
 const { requestsLogger, errorsLogger } = require('./middlewares/logger');
-
-// подключение серверного модуля для интерпретации файла
-const app = express();
 
 // назначение порта сервера
 const { PORT } = config;
+
+// подключение серверного модуля для интерпретации файла
+const app = express();
 
 // подключение базы данных
 mongoose.connect('mongodb://0.0.0.0:27017/mestodb')
@@ -41,11 +37,7 @@ app.get('/crash-test', () => {
 });
 
 // подключение роутеров
-app.use('/', adminsRouter);
-app.use('/users', auth, usersRouter);
-app.use('/cards', auth, cardsRouter);
-
-app.use('*', auth, ((req, res, next) => next(new NotFoundError('root'))));
+app.use(routes);
 
 // подключение логгера ошибок (после обр. запросов, до обр. ошибок)
 app.use(errorsLogger);
@@ -54,12 +46,7 @@ app.use(errorsLogger);
 app.use(errors());
 
 // обработчик остальных ошибок
-app.use((err, req, res, next) => {
-  const { statusCode = 500, message } = err;
-  console.log('app:', statusCode, message);
-  res.status(statusCode).send({ message: statusCode === 500 ? 'На сервере произошла ошибка' : message });
-  next();
-});
+app.use(finalErrorHandler);
 
 // включение прослушивания  порта
 app.listen(PORT, () => {
