@@ -28,8 +28,15 @@ app.use(express.json());
 // подключение логгера запросов
 app.use(requestsLogger);
 
+// разрешённы для запросов адреса
+const allowedCors = [
+  'http://okvokv-front.students.nomoredomains.monster',
+  'https://okvokv-front.students.nomoredomains.monster',
+  'localhost:3000',
+];
+
 // обработчик CORS
-app.use(cors());
+app.use(cors({ origin: allowedCors }));
 
 // реализация возможности краш-теста при запросе на роут, потом удалить
 app.get('/crash-test', () => {
