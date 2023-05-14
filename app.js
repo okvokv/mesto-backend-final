@@ -29,16 +29,16 @@ app.use(express.json());
 app.use(requestsLogger);
 
 // разрешённы для запросов адреса
-const allowedCors = [
-  'http://okvokv-front.students.nomoredomains.monster',
-  'https://okvokv-front.students.nomoredomains.monster',
-  'localhost:3000',
-  'localhost:3000/sign-in',
-  'localhost:3000/sign-up',  
-];
+// const allowedCors = [
+//  'http://okvokv-front.students.nomoredomains.monster',
+//  'https://okvokv-front.students.nomoredomains.monster',
+//  'localhost:3000',
+//  'localhost:3000/sign-in',
+//  'localhost:3000/sign-up',  
+// ];
 
 // обработчик CORS
-app.use(cors({ origin: allowedCors }));
+app.use(cors());
 
 // реализация возможности краш-теста при запросе на роут, потом удалить
 app.get('/crash-test', () => {
