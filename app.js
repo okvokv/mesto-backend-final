@@ -32,7 +32,7 @@ app.use(requestsLogger);
 const allowedCors = [
   'http://okvokv-front.students.nomoredomains.monster',
   'https://okvokv-front.students.nomoredomains.monster',
-  'localhost:3000/*',
+  'localhost:3000/*/*',
 ];
 
 // обработчик CORS
