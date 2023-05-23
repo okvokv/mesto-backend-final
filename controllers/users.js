@@ -69,10 +69,10 @@ const login = (req, res, next) => {
               });
               // если у ответа нет тела, можно использовать метод .end();
               res.end();
-              res.send({
-                // token,
-                message: 'Авторизация успешна.',
-              });
+              // res.send({
+              // token,
+              // message: 'Авторизация успешна.',
+              // });
               return;
             }
             next(new UnauthorizedError(''));
