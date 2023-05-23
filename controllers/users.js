@@ -68,7 +68,7 @@ const login = (req, res, next) => {
                 secure: false,
               });
               // если у ответа нет тела, можно использовать метод .end();
-              res.end();
+              // res.end();
               // res.send({
               // token,
               // message: 'Авторизация успешна.',
