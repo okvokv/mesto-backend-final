@@ -67,9 +67,12 @@ const login = (req, res, next) => {
                 sameSite: 'none',
                 secure: false,
               });
-              res.end();
               // если у ответа нет тела, можно использовать метод .end();
-              // res.send({ token, message: 'Авторизация успешна.' });
+              res.end();
+              res.send({
+                // token,
+                message: 'Авторизация успешна.',
+              });
               return;
             }
             next(new UnauthorizedError(''));
