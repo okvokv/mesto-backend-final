@@ -4,7 +4,7 @@ const UnauthorizedError = require('./UnauthorizedError');
 
 // проверка жетона при аутентификации пользователя
 function auth(req, res, next) {
-  const { authorization } = req.headers; // req.cookies;
+  const { authorization } = req.cookies; // req.headers;
   req.user = {};
   if (authorization && authorization.startsWith('Bearer ')) {
     const token = authorization.replace('Bearer ', '');

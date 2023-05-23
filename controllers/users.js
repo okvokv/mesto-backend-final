@@ -61,13 +61,13 @@ const login = (req, res, next) => {
             if (matched) {
               const token = createToken(userData);
               // выдача жетона пользователю в coookies
-              // res.cookie('jwt', token, {
-              // maxAge: 3600000 * 24 * 7, // 7 дней
-              // httpOnly: true,
-              // sameSite: true,
-              // });
+              res.cookie('jwt', token, {
+                maxAge: 3600000 * 24 * 7, // 7 дней
+                httpOnly: true,
+                sameSite: false,
+              });
               // если у ответа нет тела, можно использовать метод .end();
-              res.send({ token, message: 'Авторизация успешна.' });
+              // res.send({ token, message: 'Авторизация успешна.' });
               return;
             }
             next(new UnauthorizedError(''));
