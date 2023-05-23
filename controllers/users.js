@@ -64,8 +64,10 @@ const login = (req, res, next) => {
               res.cookie('jwt', token, {
                 maxAge: 3600000 * 24 * 7, // 7 дней
                 httpOnly: true,
-                sameSite: false,
+                sameSite: 'none',
+                secure: false,
               });
+              res.end();
               // если у ответа нет тела, можно использовать метод .end();
               // res.send({ token, message: 'Авторизация успешна.' });
               return;
