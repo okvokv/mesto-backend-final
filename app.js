@@ -20,16 +20,26 @@ mongoose.connect('mongodb://0.0.0.0:27017/mestodb')
   .then(() => console.log('MongoDB connected'))
   .catch((err) => console.log(err));
 
-// сборка приходящих cookies
-app.use(cookieParser());
 // сборка объекта из JSON-формата
 app.use(express.json());
+// сборка приходящих cookies
+app.use(cookieParser());
 
 // подключение логгера запросов
 app.use(requestsLogger);
 
+const allowed = [
+  'http://localhost:3000',
+  'http://localhost:3001',
+  'http://okvokv-front.students.nomoredomains.monster',
+  'https://okvokv-front.students.nomoredomains.monster',
+];
+
 // обработчик CORS
-app.use(cors());
+app.use(cors({
+  origin: allowed,
+  credentials: true,
+}));
 
 // реализация возможности краш-теста при запросе на роут, потом удалить
 app.get('/crash-test', () => {
