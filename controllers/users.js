@@ -42,6 +42,7 @@ const getUser = (req, res, next) => {
 // ---------------------------------------------------------------------------
 // функция создания жетона с зашифрованным _id пользователя на 7 дней
 function createToken(userData) {
+  console.log('userData._id', userData._id);
   return jwt.sign(
     { _id: userData._id },
     // проверка на отсутствие режима разработки
@@ -63,7 +64,7 @@ const login = (req, res, next) => {
               // выдача жетона пользователю в coookies
               res.cookie('token', token, {
                 maxAge: 3600000 * 24 * 7, // 7 дней
-                httpOnly: false, // нет доступа через код
+                httpOnly: true, // нет доступа через код
                 sameSite: 'none', // разрешена передача с разных сайтов
                 secure: false, // предача по http и по https
               });
