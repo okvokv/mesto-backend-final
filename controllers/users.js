@@ -61,18 +61,15 @@ const login = (req, res, next) => {
             if (matched) {
               const token = createToken(userData);
               // выдача жетона пользователю в coookies
-              res.cookie('jwt', token, {
+              res.cookie('token', token, {
                 maxAge: 3600000 * 24 * 7, // 7 дней
-                httpOnly: true,
-                sameSite: 'none',
-                secure: false,
+                httpOnly: false, // нет доступа через код
+                sameSite: 'none', // разрешена передача с разных сайтов
+                secure: false, // предача по http и по https
               });
+              res.send({ message: 'Авторизация успешна.' });
               // если у ответа нет тела, можно использовать метод .end();
-              // res.end();
-              // res.send({
-              // token,
-              // message: 'Авторизация успешна.',
-              // });
+              res.end();
               return;
             }
             next(new UnauthorizedError(''));
