@@ -64,7 +64,7 @@ const login = (req, res, next) => {
               res.cookie('token', token, {
                 maxAge: 3600000 * 24 * 7, // 7 дней
                 httpOnly: true, // нет доступа через код
-                sameSite: true, // разрешена передача с разных сайтов
+                sameSite: 'none', // разрешена передача с разных сайтов
                 secure: false, // предача по http и по https
               })
                 .send({ message: 'Авторизация успешна.' })
