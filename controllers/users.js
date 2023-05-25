@@ -42,7 +42,6 @@ const getUser = (req, res, next) => {
 // ---------------------------------------------------------------------------
 // функция создания жетона с зашифрованным _id пользователя на 7 дней
 function createToken(userData) {
-  console.log('userData._id', userData._id);
   return jwt.sign(
     { _id: userData._id },
     // проверка на отсутствие режима разработки
@@ -67,10 +66,10 @@ const login = (req, res, next) => {
                 httpOnly: true, // нет доступа через код
                 sameSite: 'none', // разрешена передача с разных сайтов
                 secure: false, // предача по http и по https
-              });
-              res.send({ message: 'Авторизация успешна.' });
-              // если у ответа нет тела, можно использовать метод .end();
-              res.end();
+              })
+                .send({ message: 'Авторизация успешна.' })
+                // если у ответа нет тела, можно использовать метод .end();
+                .end();
               return;
             }
             next(new UnauthorizedError(''));
