@@ -12,7 +12,6 @@ function auth(req, res, next) {
       // сверка жетона
       const payload = jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET : 'super-strong-secret'); // проверка на отсутствие режима разработки
       req.user = payload;
-      console.log('req.user', payload);
       next();
     } catch (err) { next(new UnauthorizedError('token')); }
     return;
