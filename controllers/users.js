@@ -63,9 +63,9 @@ const login = (req, res, next) => {
               // выдача жетона пользователю в coookies
               res.cookie('token', token, {
                 maxAge: 3600000 * 24 * 7, // 7 дней
-                httpOnly: true, // нет доступа через код
-                // разрешена передача с разных сайтов
-                secure: false, // предача по http и по https
+                httpOnly: true, // нет доступа через js-код
+                sameSite: 'lax', // разрешена передача с одного и с разных сайтов
+                secure: false, // разрешена предача по http и по https
               })
                 .send({ message: 'Авторизация успешна.' })
                 // если у ответа нет тела, можно использовать метод .end();
@@ -80,6 +80,12 @@ const login = (req, res, next) => {
       next(new UnauthorizedError(''));
     })
     .catch((err) => determineError(err, next));
+};
+
+// разлогинить пользователя                      // -------- //
+const logout = (req, res, next) => {
+  res.clearCookie('token');
+  next();
 };
 
 // создать пользователя
@@ -126,5 +132,5 @@ const updateAvatar = (req, res, next) => {
 };
 // --------------------------------------------------------------------------
 module.exports = {
-  getUsers, getUser, getCurrentUser, createUser, login, updateCurrentUser, updateAvatar,
+  getUsers, getUser, getCurrentUser, createUser, login, logout, updateCurrentUser, updateAvatar,
 };
