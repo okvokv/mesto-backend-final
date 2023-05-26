@@ -1,7 +1,7 @@
 const { celebrate, Joi } = require('celebrate');
 const adminsRouter = require('express').Router();
 const { regexforlink, regexforpassword } = require('../utils/regex');
-const { login, createUser } = require('../controllers/users');
+const { login, createUser, logout } = require('../controllers/users');
 
 adminsRouter.post('/signin', celebrate({
   body: Joi.object().keys({
@@ -19,5 +19,7 @@ adminsRouter.post('/signup', celebrate({
     avatar: Joi.string().regex(regexforlink),
   }),
 }), createUser);
+
+adminsRouter.delete('/signout', logout);
 
 module.exports = adminsRouter;
