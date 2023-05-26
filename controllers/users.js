@@ -65,7 +65,7 @@ const login = (req, res, next) => {
                 maxAge: 3600000 * 24 * 7, // 7 дней
                 httpOnly: true, // нет доступа через js-код
                 sameSite: 'lax', // разрешена передача с одного и с разных сайтов
-                secure: false, // разрешена предача по http и по https
+                secure: undefined, // разрешена предача по http и по https
               })
                 .send({ message: 'Авторизация успешна.' })
                 // если у ответа нет тела, можно использовать метод .end();
