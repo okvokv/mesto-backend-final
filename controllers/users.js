@@ -67,9 +67,9 @@ const login = (req, res, next) => {
                 sameSite: 'lax', // разрешена передача с одного и с разных сайтов
                 secure: undefined, // разрешена предача по http и по https
               })
-                .send({ message: 'Авторизация успешна.' })
-                // если у ответа нет тела, можно использовать метод .end();
-                .end();
+                .send({ message: 'Авторизация успешна.' });
+              // если у ответа нет тела, можно использовать метод .end();
+              // .end();
               return;
             }
             next(new UnauthorizedError(''));
@@ -83,9 +83,10 @@ const login = (req, res, next) => {
 };
 
 // разлогинить пользователя                      // -------- //
-const logout = (req, res, next) => {
-  res.clearCookie('token');
-  next();
+const logout = (req, res) => {
+  res.clearCookie('token')
+    .send({ message: 'Выход успешен.' });
+  // .end();
 };
 
 // создать пользователя
